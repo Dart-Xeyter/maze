@@ -1,6 +1,6 @@
 from border import Border
 from cell import *
-import random
+from random_generator import *
 
 
 class Field:
@@ -13,7 +13,7 @@ class Field:
             for j in range(side_length+1):
                 self.rows[i].append(Border(0 < j < side_length, False))
                 self.columns[i].append(Border(0 < j < side_length, False))
-        exit_border = random.choice([self.rows, self.columns])[random.randint(0, side_length-1)][random.choice([0, side_length])]
+        exit_border = choice([self.rows, self.columns])[randint(0, side_length-1)][choice([0, side_length])]
         exit_border.can_go = exit_border.is_exit = True
         for i in range(side_length):
             for j in range(side_length):
