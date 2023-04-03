@@ -33,8 +33,7 @@ class Player:
         else:
             self.send_message("Успешно")
             self.cell = self.cell.field[row_index][column_index]
-        self.send_message(self.cell.state)
-        self.cell = self.cell.apply_effects()
+        self.cell = self.cell.apply_effects(self)
 
     def get_message(self):
         return input()
