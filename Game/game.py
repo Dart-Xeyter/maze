@@ -5,8 +5,8 @@ class Game:
     def __init__(self, player):
         self.player = player
 
-    def game(self, side_length, river_max_len=None):
-        field = Field(side_length, river_max_len if river_max_len is not None else side_length)
+    def game(self, side_length, **kwargs):
+        field = Field(side_length, **kwargs)
         row_index, column_index = self.player.get_start(side_length)
         self.player.cell = field[row_index][column_index]
         self.player.win = False
