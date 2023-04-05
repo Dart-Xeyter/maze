@@ -10,11 +10,16 @@ def choice(collection):
     return random.choice(collection)
 
 
+def shuffled(collection):
+    random.shuffle(collection)
+    return collection
+
+
 def get_random_cell(field):
     candidates = []
     for row in field:
         for cell in row:
-            if type(cell) == LandCell:
+            if isinstance(cell, LandCell):
                 candidates.append(cell)
     return choice(candidates)
 
