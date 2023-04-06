@@ -11,6 +11,12 @@ class WaterCell(Cell):
         super().__init__(row_index, column_index, field)
         self.next, self.type = None, type
 
+    def __str__(self):
+        return 'И' if self.type == 0 else 'У' if self.type == 2 else 'В'
+
+    def __repr__(self):
+        return super().__repr__()+' '+str(self)
+
     def state_destination(self):
         return f"Вы попали в {WaterCell.states[self.type]}"
 

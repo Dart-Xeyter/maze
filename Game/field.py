@@ -21,5 +21,22 @@ class Field:
         generate_walls(self, randint(0, walls_max_num))
         generate_exit(self)
 
+    def __str__(self):
+        n = self.side_length
+        field = [['#']*(2*n+1) for _ in range(2*n+1)]
+        for row in range(n):
+            for column in range(n+1):
+                field[2*row+1][2*column] = str(self.rows[row][column])
+        for column in range(n):
+            for row in range(n+1):
+                field[2*row][2*column+1] = str(self.columns[column][row])
+        for row in range(n):
+            for column in range(n):
+                field[2*row+1][2*column+1] = str(self.field[row][column])
+        return '\n'.join(''.join(q for q in row) for row in field)
+
+    def __repr__(self):
+        return str(self)
+
     def __getitem__(self, item):
         return self.field[item]
