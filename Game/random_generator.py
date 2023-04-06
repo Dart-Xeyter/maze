@@ -25,5 +25,5 @@ def get_random_cell(field):
 
 
 def get_random_neighbour(cell):
-    candidates = [side for side in range(0, 4) if cell.get_neighbour(side) is not None]
+    candidates = [cell.get_neighbour(side) for side in range(4) if cell.get_neighbour(side) is not None]
     return choice(candidates) if len(candidates) != 0 else None

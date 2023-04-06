@@ -12,7 +12,7 @@ class Player:
                 self.send_message("Некорректные координаты")
 
     def get_move(self):
-        commands = {'-': 0, 'u': 1, 'r': 2, 'd': 3, 'l': 4}
+        commands = {'-': -1, 'u': 0, 'r': 1, 'd': 2, 'l': 3}
         while True:
             try:
                 return commands[self.get_message()]
@@ -20,15 +20,15 @@ class Player:
                 self.send_message("Некорректный ход")
 
     def make_move(self):
-        moves = [(0, 0), (-1, 0), (0, 1), (1, 0), (0, -1)]
+        moves = [(-1, 0), (0, 1), (1, 0), (0, -1), (0, 0)]
         side = self.get_move()
         row_index = self.cell.row_index+moves[side][0]
         column_index = self.cell.column_index+moves[side][1]
-        if side != 0 and self.cell.is_exit(side):
+        if side != -1 and self.cell.is_exit(side):
             self.send_message("Поздравляем, вы вышли из лабиринта!")
             self.win = True
             return
-        if side != 0 and not self.cell.can_go(side):
+        if side != -1 and not self.cell.can_go(side):
             self.send_message("Стенка")
         else:
             self.send_message("Успешно")

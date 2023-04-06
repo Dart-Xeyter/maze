@@ -9,7 +9,7 @@ class WaterCell(Cell):
 
     def __init__(self, row_index, column_index, field, type=1):
         super().__init__(row_index, column_index, field)
-        self.next, self.type = None, type
+        self.next, self.type = self, type
 
     def __str__(self):
         return 'И' if self.type == 0 else 'У' if self.type == 2 else 'В'
@@ -27,7 +27,7 @@ class WaterCell(Cell):
         player.send_message(self.state_destination()+WaterCell.state_action)
         final_cell = self
         for q in range(randint(WaterCell.minimum, WaterCell.maximum)):
-            final_cell = final_cell.get_neighbour(final_cell.next) if final_cell.next is not None else final_cell
+            final_cell = final_cell.next
         if final_cell.type == 2:
             player.send_message(final_cell.state_destination())
         return final_cell

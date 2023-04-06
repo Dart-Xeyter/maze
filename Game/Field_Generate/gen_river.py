@@ -3,16 +3,15 @@ from Cell_Types.water import WaterCell
 
 
 def generate_river(self, max_len):
-    cell = get_random_cell(self)
-    cell = WaterCell(cell.row_index, cell.column_index, self, 0)
-    self.field[cell.row_index][cell.column_index] = cell
-    for i in range(1, max_len + 1):
-        following_side = get_random_neighbour(cell)
-        if following_side is None or i == max_len:
-            cell = WaterCell(cell.row_index, cell.column_index, self, 2)
-            self.field[cell.row_index][cell.column_index] = cell
+    river = [get_random_cell(self)]
+    for i in range(1, max_len):
+        following = get_random_neighbour(river[-1])
+        if following is None:
             break
-        following = cell.get_neighbour(following_side)
-        following = WaterCell(following.row_index, following.column_index, self, 1)
-        self.field[following.row_index][following.column_index] = following
-        cell.next, cell = following_side, following
+        river.append(following)
+    assert len(river) > 1
+    for index, cell in enumerate(river):
+        cell = WaterCell(cell.row_index, cell.column_index, self, (index != 0)+(index == len(river)-1))
+        river[index] = self.field[cell.row_index][cell.column_index] = cell
+    for q in range(len(river)-1):
+        river[q].next = river[q+1]

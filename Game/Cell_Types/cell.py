@@ -11,8 +11,8 @@ class Cell:
 
     def get_border(self, side):
         if side % 2 == 1:
-            return self.field.columns[self.column_index][self.row_index + (side == 3)]
-        return self.field.rows[self.row_index][self.column_index + (side == 2)]
+            return self.field.rows[self.row_index][self.column_index+(side == 1)]
+        return self.field.columns[self.column_index][self.row_index+(side == 2)]
 
     def get_neighbour(self, side):
         row_coordinate = self.row_index+Cell.sides[side][0]
