@@ -2,9 +2,20 @@ class Player:
     def __init__(self):
         self.cell = self.win = None
 
+    def get_field_size(self):
+        while True:
+            try:
+                self.send_message("Введите размер поля: ", end='')
+                side_length = int(self.get_message())
+                assert side_length > 1
+                return side_length
+            except (ValueError, AssertionError):
+                self.send_message("Некорректный размер")
+
     def get_start(self, side_length):
         while True:
             try:
+                self.send_message("Введите ваше начальное расположение: ", end='')
                 row_index, column_index = map(lambda x: int(x)-1, self.get_message().split())
                 assert(-1 < min(row_index, column_index) and max(row_index, column_index) < side_length)
                 return row_index, column_index
@@ -38,6 +49,6 @@ class Player:
     def get_message(self):
         return input()
 
-    def send_message(self, message):
+    def send_message(self, message, end='\n'):
         if message:
-            print(message)
+            print(message, end=end)
