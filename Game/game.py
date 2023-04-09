@@ -8,9 +8,9 @@ class Game:
     def game(self, arguments):
         side_length = self.player.get_field_size()
         field = Field(side_length, arguments)
+        row_index, column_index = self.player.get_start(side_length)
         if arguments.show_field:
             print(field)
-        row_index, column_index = self.player.get_start(side_length)
         self.player.cell = field[row_index][column_index]
         self.player.win = False
         self.player.send_message("Игра началась!")
