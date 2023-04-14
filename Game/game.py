@@ -2,20 +2,27 @@ from field import Field
 
 
 class Game:
-    def __init__(self, player):
-        self.player = player
+    def __init__(self, players):
+        self.players = players
+        self.who_moves = 0
 
     def game(self, arguments):
-        side_length = self.player.get_field_size()
+        side_length = arguments.side_length
         field = Field(side_length, arguments)
-        row_index, column_index = self.player.get_start(side_length)
+        for player in self.players:
+            row_index, column_index = player.logger.get_start(side_length)
+            player.cell = field[row_index][column_index]
         if arguments.show_field:
             print(field)
-        self.player.cell = field[row_index][column_index]
-        self.player.win = False
-        self.player.send_message("Игра началась!")
-        while self.player.win is False:
+        for player in self.players:
+            player.logger.send_message("Игра началась!")
+        while all(not player.win for player in self.players):
             self.make_move()
+        for player in self.players:
+            player.logger.send_message("Поздравляем, вы вышли из лабиринта!"
+                                       if player.win else
+                                       "К сожалению, другой игрок опередил вас :(")
 
     def make_move(self):
-        self.player.make_move()
+        self.players[self.who_moves].make_move()
+        self.who_moves = (self.who_moves+1) % len(self.players)

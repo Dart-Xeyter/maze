@@ -20,14 +20,14 @@ class WaterCell(Cell):
     def state_destination(self):
         return f"Вы попали в {WaterCell.states[self.type]}"
 
-    def apply_effects(self, player):
+    def apply_effects(self, logger):
         if self.type == 2:
-            player.send_message(self.state_destination())
+            logger.send_message(self.state_destination())
             return self
-        player.send_message(self.state_destination()+WaterCell.state_action)
+        logger.send_message(self.state_destination()+WaterCell.state_action)
         final_cell = self
         for q in range(randint(WaterCell.minimum, WaterCell.maximum)):
             final_cell = final_cell.next
         if final_cell.type == 2:
-            player.send_message(final_cell.state_destination())
+            logger.send_message(final_cell.state_destination())
         return final_cell

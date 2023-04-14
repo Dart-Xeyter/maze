@@ -14,6 +14,6 @@ class HoleCell(Cell):
     def __repr__(self):
         return super().__repr__()+' '+str(self)
 
-    def apply_effects(self, player):
-        player.send_message(HoleCell.state)
+    def apply_effects(self, logger):
+        logger.send_message(HoleCell.state)
         return self.next
