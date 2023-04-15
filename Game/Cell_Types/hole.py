@@ -9,7 +9,7 @@ class HoleCell(Cell):
         self.next, self.index = self, index
 
     def __str__(self):
-        return str(self.index)
+        return str(self.index+1)
 
     def __repr__(self):
         return super().__repr__()+' '+str(self)

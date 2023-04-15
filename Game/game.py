@@ -1,4 +1,5 @@
 from field import Field
+from random_generator import set_seed
 
 
 class Game:
@@ -7,6 +8,8 @@ class Game:
         self.who_moves = 0
 
     def game(self, arguments):
+        if arguments.debug:
+            set_seed()
         side_length = arguments.side_length
         field = Field(side_length, arguments)
         for player in self.players:

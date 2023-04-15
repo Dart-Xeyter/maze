@@ -14,6 +14,8 @@ def is_connected(self, cell):
         if not isinstance(cell, LandCell) and not was[cell.next.row_index][cell.next.column_index]:
             queue.put(cell.next)
             was[cell.next.row_index][cell.next.column_index] = True
+        if isinstance(cell, WaterCell) and cell.type == 0:
+            continue
         for side in range(4):
             if cell.can_go(side) and not cell.is_exit(side):
                 neighbour = cell.get_neighbour(side)
@@ -21,4 +23,4 @@ def is_connected(self, cell):
                         not was[neighbour.row_index][neighbour.column_index]:
                     queue.put(neighbour)
                     was[neighbour.row_index][neighbour.column_index] = True
-    return all(all(q for q in row) for row in was)
+    return all(all(was_there for was_there in row) for row in was)

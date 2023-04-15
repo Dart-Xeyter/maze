@@ -15,6 +15,8 @@ class Cell:
         return self.field.columns[self.column_index][self.row_index+(side == 2)]
 
     def get_neighbour(self, side):
+        if side == -1:
+            return self
         row_coordinate = self.row_index+Cell.side_directions[side][0]
         column_coordinate = self.column_index+Cell.side_directions[side][1]
         if not (0 <= row_coordinate < self.field.side_length and 0 <= column_coordinate < self.field.side_length):
