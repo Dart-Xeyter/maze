@@ -1,3 +1,4 @@
+import config
 from arguments import Arguments
 from game import Game
 from player import Player

@@ -1,7 +1,4 @@
 class Cell:
-    sides = ['up', 'right', 'down', 'left']
-    side_directions = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-
     def __init__(self, row_index, column_index, field):
         self.row_index, self.column_index = row_index, column_index
         self.field = field

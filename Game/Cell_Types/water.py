@@ -3,10 +3,6 @@ from random_generator import randint
 
 
 class WaterCell(Cell):
-    minimum, maximum = 1, 2
-    states = ["исток", "реку", "устье"]
-    state_action = f" и вас снесло на от {minimum} до {maximum} клеток по течению"
-
     def __init__(self, row_index, column_index, field, type=1):
         super().__init__(row_index, column_index, field)
         self.next, self.type = self, type
@@ -16,9 +12,6 @@ class WaterCell(Cell):
 
     def __repr__(self):
         return super().__repr__()+' '+str(self)
-
-    def state_destination(self):
-        return f"Вы попали в {WaterCell.states[self.type]}"
 
     def apply_effects(self, logger):
         if self.type == 2:
