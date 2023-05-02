@@ -1,4 +1,5 @@
 from Cell_Types.cell import Cell
+from Bot.logger_bot import get_message, send_message
 
 
 class Logger:
@@ -9,12 +10,17 @@ class Logger:
     async def get_message(self, player):
         if self.variant == "terminal":
             return input()
+        elif self.variant == "telegram":
+            return await get_message(player)
 
     async def send_message(self, player, message, end='\n'):
         if not message:
             return
         if self.variant == "terminal":
-            print(message, end=end)
+            print(message, end='\n' if end == '`' else end)
+        elif self.variant == "telegram":
+            message = '`'+message+'`' if end == '`' else message
+            await send_message(self.bot, player, message)
 
     async def get_start(self, player, side_length):
         while True:

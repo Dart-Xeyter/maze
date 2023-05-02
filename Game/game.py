@@ -19,7 +19,7 @@ class Game:
             player.cell = field[row_index][column_index]
         if arguments.show_field:
             for player in self.players:
-                await self.logger.send_message(player, str(field))
+                await self.logger.send_message(player, str(field), end='`')
         for player in self.players:
             await self.logger.send_message(player, "Игра началась!")
         while all(not player.win for player in self.players):
