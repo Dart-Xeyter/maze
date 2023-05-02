@@ -1,19 +1,16 @@
-from logger import Logger
-
-
 class Player:
-    def __init__(self, variant):
+    def __init__(self, user_id=None):
         self.cell, self.win = None, False
-        self.logger = Logger(variant)
+        self.user_id = user_id
 
-    def make_move(self):
-        side = self.logger.get_move()
+    async def make_move(self, logger):
+        side = await logger.get_move(self)
         if self.cell.is_exit(side):
             self.win = True
             return
         if not self.cell.can_go(side):
-            self.logger.send_message("Стенка")
+            await logger.send_message(self, "Стенка")
         else:
-            self.logger.send_message("Успешно")
+            await logger.send_message(self, "Успешно")
             self.cell = self.cell.get_neighbour(side)
-        self.cell = self.cell.apply_effects(self.logger)
+        self.cell = await self.cell.apply_effects(logger, self)

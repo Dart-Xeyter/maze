@@ -13,14 +13,14 @@ class WaterCell(Cell):
     def __repr__(self):
         return super().__repr__()+' '+str(self)
 
-    def apply_effects(self, logger):
+    async def apply_effects(self, logger, player):
         if self.type == 2:
-            logger.send_message(self.state_destination())
+            await logger.send_message(player, self.state_destination())
             return self
-        logger.send_message(self.state_destination()+WaterCell.state_action)
+        await logger.send_message(player, self.state_destination()+WaterCell.state_action)
         final_cell = self
         for q in range(randint(WaterCell.minimum, WaterCell.maximum)):
             final_cell = final_cell.next
         if final_cell.type == 2:
-            logger.send_message(final_cell.state_destination())
+            await logger.send_message(player, final_cell.state_destination())
         return final_cell
