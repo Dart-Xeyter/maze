@@ -1,7 +1,4 @@
 class Cell:
-    # Cell has 4 sides - [up, right, down, left]
-    sides = [(-1, 0), (0, 1), (1, 0), (0, -1)]
-
     def __init__(self, row_index, column_index, field):
         self.row_index, self.column_index = row_index, column_index
         self.field = field
@@ -15,14 +12,16 @@ class Cell:
         return self.field.columns[self.column_index][self.row_index+(side == 2)]
 
     def get_neighbour(self, side):
-        row_coordinate = self.row_index+Cell.sides[side][0]
-        column_coordinate = self.column_index+Cell.sides[side][1]
+        if side == -1:
+            return self
+        row_coordinate = self.row_index+Cell.side_directions[side][0]
+        column_coordinate = self.column_index+Cell.side_directions[side][1]
         if not (0 <= row_coordinate < self.field.side_length and 0 <= column_coordinate < self.field.side_length):
             return None
         return self.field[row_coordinate][column_coordinate]
 
     def can_go(self, side):
-        return self.get_border(side).can_go
+        return side == -1 or self.get_border(side).can_go
 
     def is_exit(self, side):
-        return self.get_border(side).is_exit
+        return side != -1 and self.get_border(side).is_exit

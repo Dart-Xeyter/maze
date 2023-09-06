@@ -1,19 +1,16 @@
-from arguments import Arguments
+import asyncio
+from arguments import get_arguments
+from config import set_cell_configs
 from game import Game
 from player import Player
-from sys import argv, exit
+
+
+async def main():
+    arguments = get_arguments()
+    game = Game("terminal", tuple(Player() for _ in range(arguments.num_players)))
+    await game.game(arguments)
 
 
 if __name__ == "__main__":
-    arguments = Arguments(argv)
-    game = Game(Player())
-    if not arguments.repeat:
-        game.game(arguments)
-        exit(0)
-    play = True
-    while play:
-        game.game(arguments)
-        verdict = input("Начать новую игру? ")
-        while verdict not in ['y', 'n']:
-            verdict = input("Некорректный ответ\n")
-        play = (verdict == 'y')
+    set_cell_configs()
+    asyncio.run(main())

@@ -2,6 +2,13 @@ import random
 from Cell_Types.land import LandCell
 
 
+def set_seed():
+    seed = randint(-17957179, 17957179)
+    random.seed(seed)
+    with open('random_seed.txt', 'w') as f:
+        f.write(str(seed)+'\n')
+
+
 def randint(minimum, maximum):
     return random.randint(minimum, maximum)
 
@@ -25,5 +32,6 @@ def get_random_cell(field):
 
 
 def get_random_neighbour(cell):
-    candidates = [cell.get_neighbour(side) for side in range(4) if cell.get_neighbour(side) is not None]
+    candidates = [cell.get_neighbour(side) for side in range(4)]
+    candidates = [cell for cell in candidates if isinstance(cell, LandCell)]
     return choice(candidates) if len(candidates) != 0 else None

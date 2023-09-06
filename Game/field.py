@@ -21,13 +21,13 @@ class Field:
             generate_tunnel(self, randint(1, tunnel_max_len))
             generate_walls(self, randint(0, walls_max_num))
             generate_exit(self)
-            if is_connected(self, self.get_mouth()):
+            if is_connected(self, self.get_river_tip(2)):
                 break
 
-    def get_mouth(self):
+    def get_river_tip(self, type):
         for row in self:
             for cell in row:
-                if isinstance(cell, WaterCell) and cell.type == 2:
+                if isinstance(cell, WaterCell) and cell.type == type:
                     return cell
 
     def __str__(self):

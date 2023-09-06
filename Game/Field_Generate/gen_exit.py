@@ -7,9 +7,8 @@ def generate_exit(self):
     under_water = True
     while under_water:
         exit_border = choice([self.rows, self.columns])[randint(0, n - 1)][choice([0, n])]
-        for row in self.field:
-            for cell in row:
-                for side in range(4):
-                    if cell.get_border(side) == exit_border and not isinstance(cell, WaterCell):
-                        under_water = False
+        exit_cell = next((cell for cell in row
+                          if any(self.get_border(side) == exit_border for side in range(4)))
+                         for row in self.field)
+        under_water = isinstance(exit_cell, WaterCell)
     exit_border.can_go = exit_border.is_exit = True

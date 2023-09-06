@@ -1,54 +1,16 @@
 class Player:
-    def __init__(self):
-        self.cell = self.win = None
+    def __init__(self, user_id=None):
+        self.cell, self.win = None, False
+        self.user_id = user_id
 
-    def get_field_size(self):
-        while True:
-            try:
-                self.send_message("Введите размер поля: ", end='')
-                side_length = int(self.get_message())
-                assert side_length > 1
-                return side_length
-            except (ValueError, AssertionError):
-                self.send_message("Некорректный размер")
-
-    def get_start(self, side_length):
-        while True:
-            try:
-                self.send_message("Введите ваше начальное расположение: ", end='')
-                row_index, column_index = map(lambda x: int(x)-1, self.get_message().split())
-                assert(-1 < min(row_index, column_index) and max(row_index, column_index) < side_length)
-                return row_index, column_index
-            except (ValueError, AssertionError):
-                self.send_message("Некорректные координаты")
-
-    def get_move(self):
-        commands = {'-': -1, 'u': 0, 'r': 1, 'd': 2, 'l': 3}
-        while True:
-            try:
-                return commands[self.get_message()]
-            except KeyError:
-                self.send_message("Некорректный ход")
-
-    def make_move(self):
-        moves = [(-1, 0), (0, 1), (1, 0), (0, -1), (0, 0)]
-        side = self.get_move()
-        row_index = self.cell.row_index+moves[side][0]
-        column_index = self.cell.column_index+moves[side][1]
-        if side != -1 and self.cell.is_exit(side):
-            self.send_message("Поздравляем, вы вышли из лабиринта!")
+    async def make_move(self, logger):
+        side = await logger.get_move(self)
+        if self.cell.is_exit(side):
             self.win = True
             return
-        if side != -1 and not self.cell.can_go(side):
-            self.send_message("Стенка")
+        if not self.cell.can_go(side):
+            await logger.send_message(self, "Стенка")
         else:
-            self.send_message("Успешно")
-            self.cell = self.cell.field[row_index][column_index]
-        self.cell = self.cell.apply_effects(self)
-
-    def get_message(self):
-        return input()
-
-    def send_message(self, message, end='\n'):
-        if message:
-            print(message, end=end)
+            await logger.send_message(self, "Успешно")
+            self.cell = self.cell.get_neighbour(side)
+        self.cell = await self.cell.apply_effects(logger, self)
